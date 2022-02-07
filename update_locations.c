@@ -37,9 +37,9 @@ double time_update(int iters, double *xs, double *ys, double *zs, double *vx, do
     clock_gettime(CLOCK_MONOTONIC, &start);
     update_coords(xs, ys, zs, vx, vy, vz);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    time = (stop.tv_sec - start.tv_sec)/1000000000 + (stop.tv_nsec - start.tv_nsec);
-    return time;
+    time = time + (stop.tv_sec - start.tv_sec)/1000000000 + (stop.tv_nsec - start.tv_nsec);
   }
+  return time;
 }
 
 double sum(double *s) {
