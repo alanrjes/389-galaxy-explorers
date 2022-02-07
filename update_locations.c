@@ -37,7 +37,7 @@ double time_update(int iters, double *xs, double *ys, double *zs, double *vx, do
     clock_gettime(CLOCK_MONOTONIC, &start);
     update_coords(xs, ys, zs, vx, vy, vz);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    time += (stop.tv_sec - start.tv_sec)*1000000000 + (stop.tv_nsec - start.tv_nsec);  // in milliseconds
+    time += (stop.tv_sec - start.tv_sec)*1000000000 + (stop.tv_nsec - start.tv_nsec);  // in nanoseconds
   }
   return time;
 }
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
   vz = generate_random_list(size, 1.);
   t = time_update(iters, xs, ys, zs, vx, vy, vz);
   chksum = sum(xs) + sum(ys) + sum(zs);
-  printf("Mean time per coordinate: %fus\n", (t / (size * iters * 1000)));  // millisecond to microsecond conversion added
+  printf("Mean time per coordinate: %fus\n", ((t / (size * iters)) / 1000));  // nanosecond to microsecond conversion added
   printf("Final checksum is: %f\n", chksum);
   exit(0);
 }
