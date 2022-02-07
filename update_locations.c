@@ -32,12 +32,12 @@ void update_coords(double* xs, double* ys, double* zs, double* vx, double* vy, d
 
 double time_update(int iters, double *xs, double *ys, double *zs, double *vx, double *vy, double *vz) {
   struct timespec start, stop;
-  double time;
+  double time = 0;
   for (int i=0; i<iters; i++) {
     clock_gettime(CLOCK_MONOTONIC, &start);
     update_coords(xs, ys, zs, vx, vy, vz);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    time = time + (stop.tv_sec - start.tv_sec)/1000000000 + (stop.tv_nsec - start.tv_nsec);
+    time += (stop.tv_sec - start.tv_sec)*1000000000 + (stop.tv_nsec - start.tv_nsec);  // in milliseconds
   }
   return time;
 }
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
   vz = generate_random_list(size, 1.);
   t = time_update(iters, xs, ys, zs, vx, vy, vz);
   chksum = sum(xs) + sum(ys) + sum(zs);
-  printf("Mean time per coordinate: %fus\n", (t / (size * iters)));
+  printf("Mean time per coordinate: %fus\n", (t / (size * iters * 1000)));  // millisecond to microsecond conversion added
   printf("Final checksum is: %f\n", chksum);
   exit(0);
 }
